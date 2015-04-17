@@ -1,0 +1,5 @@
+package garage.model;
+
+public interface KeyPadBufferListener {
+
+}

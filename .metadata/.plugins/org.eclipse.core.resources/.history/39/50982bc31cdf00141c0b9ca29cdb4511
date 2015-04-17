@@ -1,0 +1,5 @@
+package garage.model;
+
+public class TimerThread extends Thread implements Runnable {
+
+}

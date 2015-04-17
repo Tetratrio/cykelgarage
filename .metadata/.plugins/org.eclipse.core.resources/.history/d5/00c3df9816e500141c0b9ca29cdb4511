@@ -1,0 +1,5 @@
+package garage.gui.tabs;
+
+public class BasicTabPane {
+
+}

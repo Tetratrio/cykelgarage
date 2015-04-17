@@ -1,0 +1,27 @@
+package garage.controller;
+
+import garage.database.Database;
+
+public class Controller {
+	private static int USERNAME_LENGTH = 10;
+	private static int PASSWORD_LENGTH = 4;
+	Database database;
+	
+	public void Controller(Database database) {
+		this.database = database;
+	}
+
+	private String usernameInput = "";
+	public void recieveBuffer(String input) {
+		if (input.length() == USERNAME_LENGTH) {
+			if (database.userExists(input)) {
+				
+				//TODO Green led lights up
+			} else {
+				usernameInput = "";
+			}
+		} else {
+			
+		}
+	}
+}

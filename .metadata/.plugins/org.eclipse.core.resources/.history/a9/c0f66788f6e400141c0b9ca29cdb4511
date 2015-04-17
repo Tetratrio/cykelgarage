@@ -1,0 +1,9 @@
+package garage.logging;
+
+public abstract class Logger {
+	private static boolean initialized = false;
+	
+	public void initialize() {
+		
+	}
+}

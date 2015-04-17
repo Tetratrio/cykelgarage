@@ -1,0 +1,23 @@
+package garage.gui.tabs.view_data_tab;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionListener;
+
+import garage.controller.Controller;
+import garage.gui.tabs.BasicTabPanel;
+
+@SuppressWarnings("serial")
+public class ViewTab extends BasicTabPanel implements ListSelectionListener{
+	private DefaultListModel<String> userList;
+	private DefaultListModel<String> bikeList;
+
+	public ViewTab(Controller controller) {
+		super(controller);
+		// TODO Auto-generated constructor stub
+	}
+	
+	@Override
+	public void notifyTabChange() {
+		//TODO update lists
+	}
+}

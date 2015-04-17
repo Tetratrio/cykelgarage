@@ -1,0 +1,29 @@
+package garage.gui.tabs.search_data_tab;
+
+import java.awt.BorderLayout;
+
+import javax.swing.*;
+
+import garage.controller.Controller;
+import garage.gui.tabs.BasicTabPanel;
+
+@SuppressWarnings("serial")
+public class SearchTab extends BasicTabPanel {
+	private final static String[] SEARCH_FOR_ITEMS = {"Användarnamn", "Cykel ID"};
+	private DefaultListModel<String> searchResultList;
+	private JComboBox<String> searchForMenu;
+	
+	public SearchTab(Controller controller) {
+		super(controller);
+		this.setLayout(new BorderLayout());
+		
+		JPanel searchPanel = new JPanel();
+		searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.X_AXIS));
+		
+		JPanel searchOptionsPanel = new JPanel();
+		searchOptionsPanel.setLayout(new BoxLayout(searchOptionsPanel, BoxLayout.Y_AXIS));
+		searchOptionsPanel.add(new JLabel());
+	
+	}
+
+}

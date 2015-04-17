@@ -1,0 +1,7 @@
+package garage.gui.tabs.view_data_tab;
+
+import javax.swing.DefaultListSelectionModel;
+
+public class DisableItemSelectionModel extends DefaultListSelectionModel {
+
+}

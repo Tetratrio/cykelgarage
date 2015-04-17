@@ -1,0 +1,15 @@
+package garage.gui;
+
+import javax.swing.*;
+import javax.swing.event.*;
+
+public class BikeGarageGUI extends JFrame implements ChangeListener {
+
+	private void notifyTabs() {
+		
+	}
+	@Override
+	public void stateChanged(ChangeEvent ce) {
+		
+	}
+}

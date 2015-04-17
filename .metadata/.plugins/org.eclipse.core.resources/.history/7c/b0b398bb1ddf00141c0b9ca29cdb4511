@@ -1,0 +1,22 @@
+package garage.model;
+
+public class DigitBuffer {
+
+	
+	private class TimerThread extends Thread implements Runnable {
+		private DigitBuffer manager;
+		private long time;
+		private TimerThread(int seconds, DigitBuffer manager) {
+			this.manager = manager;
+			time = seconds * 1000;
+		}
+		
+		public void run() {
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Logg stacktrace?
+			}
+		}
+	}
+}

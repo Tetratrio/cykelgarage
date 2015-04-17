@@ -1,0 +1,31 @@
+package garage.controller;
+
+import garage.database.Database;
+import garage.model.*;
+
+public class Controller {
+	private static int USERNAME_LENGTH = 10;
+	private static int PASSWORD_LENGTH = 4;
+	Database database;
+	KeyPadBuffer buffer;
+	
+	public void Controller(Database database) {
+		this.database = database;
+		buffer = new KeyPadBuffer(USERNAME_LENGTH, this);
+	}
+
+	private String usernameInput = "";
+	public void recieveBuffer(String input) {
+		if (input.length() == USERNAME_LENGTH) {
+			if (database.userExists(input)) {
+				
+				//TODO Green led lights up
+			} else {
+				usernameInput = "";
+				//TODO Red led lights up
+			}
+		} else {
+			
+		}
+	}
+}

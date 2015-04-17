@@ -1,0 +1,5 @@
+package garage.logging;
+
+public abstract class Logger {
+	
+}

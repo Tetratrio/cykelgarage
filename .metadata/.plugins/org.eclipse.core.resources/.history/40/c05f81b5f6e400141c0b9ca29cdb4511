@@ -1,0 +1,13 @@
+package garage.logging;
+
+public abstract class Logger {
+	private static boolean initialized = false;
+	
+	public static void initialize() {
+		
+	}
+	
+	public static void log(String msg) {
+		
+	}
+}

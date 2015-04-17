@@ -1,0 +1,7 @@
+package garage.gui.tabs.manipulate_data_tab;
+
+import garage.gui.tabs.BasicTabPanel;
+
+public class ManipulationTab extends BasicTabPanel {
+
+}

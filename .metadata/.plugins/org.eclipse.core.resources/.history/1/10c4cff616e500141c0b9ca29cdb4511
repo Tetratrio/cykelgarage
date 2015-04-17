@@ -1,0 +1,12 @@
+package garage.gui.tabs;
+
+import javax.swing.*;
+
+@SuppressWarnings("serial")
+public class BasicTabPane extends JPanel {
+	
+	
+	public void notifyTabChange() {
+		
+	}
+}

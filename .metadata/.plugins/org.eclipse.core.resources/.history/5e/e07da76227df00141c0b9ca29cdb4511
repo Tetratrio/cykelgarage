@@ -1,0 +1,50 @@
+package garage.controller;
+
+import garage.database.Database;
+import garage.model.*;
+
+public class Controller {
+	private static int USERNAME_LENGTH = 10;
+	private static int PASSWORD_LENGTH = 4;
+	private static int UNLOCK_TIME = 10;
+	Database database;
+	KeyPadBuffer buffer;
+	
+	public void Controller(Database database) {
+		this.database = database;
+		buffer = new KeyPadBuffer(USERNAME_LENGTH, this);
+	}
+
+	private String storedUsername = "";
+	
+	public void recieveBuffer(String input) {
+		if (input.length() == USERNAME_LENGTH) {
+			newUsernameInput(input);
+		} else {
+			newPasswordInput(input);
+		}
+	}
+	
+	private void newUsernameInput(String username) {
+		if (database.userExists(username)) {
+			storedUsername = username;
+			buffer.setExpectedInput(PASSWORD_LENGTH);
+			//TODO Green led lights up
+		} else {
+			storedUsername = "";
+			//TODO Red led lights up
+		}
+	}
+	
+	private void newPasswordInput(String password) {
+		String correctPassword = database.getPassword(storedUsername);
+		if (correctPassword != null && correctPassword.equals(password)) {
+			//TODO Unlock cykelingang
+			//TODO Green led lights up
+			//TODO Register checkIn to database
+		} else {
+			storedUsername = "";
+			//TODO Red led lights up
+		}
+	}
+}

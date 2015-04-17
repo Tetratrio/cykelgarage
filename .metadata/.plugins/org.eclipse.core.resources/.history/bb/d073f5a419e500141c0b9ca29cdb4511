@@ -1,0 +1,21 @@
+package garage.gui.tabs.view_data_tab;
+
+import javax.swing.DefaultListModel;
+
+import garage.controller.Controller;
+import garage.gui.tabs.BasicTabPanel;
+
+@SuppressWarnings("serial")
+public class ViewTab extends BasicTabPanel {
+	private DefaultListModel<String> userList;
+
+	public ViewTab(Controller controller) {
+		super(controller);
+		// TODO Auto-generated constructor stub
+	}
+	
+	@Override
+	public void notifyTabChange() {
+		//TODO update lists
+	}
+}

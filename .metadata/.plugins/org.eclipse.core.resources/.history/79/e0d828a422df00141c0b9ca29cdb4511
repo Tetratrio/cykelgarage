@@ -1,0 +1,51 @@
+package garage.model;
+
+import garage.controller.Controller;
+
+public class DigitBuffer {
+	private static int BUFFER_SIZE = 10;
+	private static int WAITING_TIME = 4;
+	private Controller controller;
+	private TimerThread timer = null;
+	private char[] buffer = new char[BUFFER_SIZE];
+	private int expectedInput = BUFFER_SIZE;
+	
+	
+	
+	
+	public void entryCharacter(char c) {
+		buffer[buffer.length] = c;
+		if (buffer.length >= expectedInput) {
+			controller.recieveBuffer(buffer);
+			buffer = new char[BUFFER_SIZE];
+			expectedInput = BUFFER_SIZE;
+		}
+	}
+	
+	
+	private void timerFinnished(TimerThread caller) {
+		if (timer == null || ! timer.equals(caller)) {
+			return;
+		}
+		
+	}
+	
+	private class TimerThread extends Thread implements Runnable {
+		private DigitBuffer manager;
+		private long time;
+		private TimerThread(int seconds, DigitBuffer manager) {
+			this.manager = manager;
+			time = seconds * 1000;
+			this.start();
+		}
+		
+		public void run() {
+			try {
+				Thread.sleep(time);
+			} catch (InterruptedException e) {
+				// TODO Logg stacktrace?
+			}
+			manager.timerFinnished(this);
+		}
+	}
+}

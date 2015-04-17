@@ -1,0 +1,11 @@
+package garage.controller;
+
+public class Controller {
+	private static int USERNAME_LENGTH = 10;
+	private static int PASSWORD_LENGTH = 4;
+
+	private String lastKeyPadInput = "";
+	public void recieveBuffer(char[] buffer) {
+		if (lastKeyPadInput.length() == )
+	}
+}
