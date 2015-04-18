@@ -120,7 +120,7 @@ public class Database {
     
     /**
      * Checkout a user.
-     * @param username Username of user to check in.
+     * @param username
      */
     public void checkOutUser(String username) {
     	

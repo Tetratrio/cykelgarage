@@ -110,19 +110,7 @@ public class Database {
         return false;
     }
     
-    /**
-     * Checkin a user.
-     * @param username Username of user to check in.
-     */
     public void checkInUser(String username) {
-    	
-    }
-    
-    /**
-     * Checkout a user.
-     * @param username Username of user to check in.
-     */
-    public void checkOutUser(String username) {
     	
     }
     

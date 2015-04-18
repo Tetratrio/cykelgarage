@@ -111,22 +111,6 @@ public class Database {
     }
     
     /**
-     * Checkin a user.
-     * @param username Username of user to check in.
-     */
-    public void checkInUser(String username) {
-    	
-    }
-    
-    /**
-     * Checkout a user.
-     * @param username Username of user to check in.
-     */
-    public void checkOutUser(String username) {
-    	
-    }
-    
-    /**
      * Search for userinfo by username.
      * @param username Username to look for.
      * @return List of Strings with search result.
