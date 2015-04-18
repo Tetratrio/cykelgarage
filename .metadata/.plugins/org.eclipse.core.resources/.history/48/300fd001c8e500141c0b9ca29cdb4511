@@ -90,17 +90,6 @@ public class Database {
     public boolean createUser(String username, String password) {
     	return false;
     }
-    
-    /**
-     * Remove an existing user account. If user does not exist
-     * or the user has bikes connected to the garage the user account
-     * will not be removed.
-     * @param username Username for the account.
-     * @return True if successful, otherwise false.
-     */
-    public boolean removeUser(String username) {
-    	return true;
-    }
 
     /**
      * Get owner of a bike.
