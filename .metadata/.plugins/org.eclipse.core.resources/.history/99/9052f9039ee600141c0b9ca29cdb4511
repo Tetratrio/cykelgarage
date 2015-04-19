@@ -1,0 +1,10 @@
+package garage.launcher;
+
+import garage.gui.BikeGarageGUI;
+
+public abstract class Launcher {
+	
+	public static void main(String[] args) {
+		new BikeGarageGUI(null);
+	}
+}

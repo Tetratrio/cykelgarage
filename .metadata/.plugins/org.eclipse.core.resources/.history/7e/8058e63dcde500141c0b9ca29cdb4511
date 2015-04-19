@@ -1,0 +1,68 @@
+package garage.gui.tabs.manipulate_data_tab;
+
+import java.awt.event.*;
+
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+
+import garage.controller.Controller;
+import garage.gui.tabs.BasicTabPanel;
+
+@SuppressWarnings("serial")
+public class ManipulationTab extends BasicTabPanel implements ActionListener {
+    private final static String ONE_THIRD_EMPTY_SPACE = "             ";
+
+    private final static String REG_USR_TITLE = "Registrera ny användare";
+    private final static String REG_USR_USRNAME_TITLE = "Användarnamn";
+    private final static String REG_USR_PASSWORD_TITLE = "Lösenord";
+    private final static String REG_USR_BUTTON_TITLE = "";
+    private final static String REG_USR_BUTTON_LABEL = "Registrera";
+
+    private final static String UNREG_USR_TITLE = "Avregistrera befintlig användare";
+    private final static String UNREG_USR_USRNAME_TITLE = "Användarnamn";
+    private final static String UNREG_USR_EMPTY_SPACE = ONE_THIRD_EMPTY_SPACE;
+    private final static String UNREG_USR_BUTTON_TITLE = "";
+    private final static String UNREG_USR_BUTTON_LABEL = "Avregistrera";
+
+    private final static String ADD_BIKE_TITLE = "Anslut ny cykel";
+    private final static String ADD_BIKE_USRNAME_TITLE = "Användarnamn";
+    private final static String ADD_BIKE_EMPTY_SPACE = ONE_THIRD_EMPTY_SPACE;
+    private final static String ADD_BIKE_BUTTON_TITLE = "";
+    private final static String ADD_BIKE_BUTTON_LABEL = "Anslut";
+
+    private final static String REM_BIKE_TITLE = "Ta bort befintlig cykel";
+    private final static String REM_BIKE_BIKEID_TITLE = "Cykel ID";
+    private final static String REM_BIKE_EMPTY_SPACE = ONE_THIRD_EMPTY_SPACE;
+    private final static String REM_BIKE_BUTTON_TITLE = "";
+    private final static String REM_BIKE_BUTTON_LABEL = "Ta bort";
+
+	public ManipulationTab(Controller controller) {
+		super(controller);
+		Ethis.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		
+		JPanel p;
+        JButton b;
+        TitledBorder t;
+		
+		JPanel registerUserPanel = new JPanel();
+		registerUserPanel.setLayout(new BoxLayout(registerUserPanel, BoxLayout.X_AXIS));
+		p = new JPanel();
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+
+		
+		JPanel removeUserPanel = new JPanel();
+		removeUserPanel.setLayout(new BoxLayout(removeUserPanel, BoxLayout.X_AXIS));
+		
+		JPanel connectBikePanel = new JPanel();
+		connectBikePanel.setLayout(new BoxLayout(connectBikePanel, BoxLayout.X_AXIS));
+		
+		JPanel removeBikePanel = new JPanel();
+		removeBikePanel.setLayout(new BoxLayout(removeBikePanel, BoxLayout.X_AXIS));
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+}

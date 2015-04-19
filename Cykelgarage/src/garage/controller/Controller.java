@@ -3,6 +3,7 @@ package garage.controller;
 import java.util.List;
 
 import garage.database.Database;
+import garage.logging.*;
 import garage.model.*;
 import garage.hardware.interfaces.*;
 
@@ -12,11 +13,11 @@ import garage.hardware.interfaces.*;
  * hardware extensions.
  */
 public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
-	private static int USERNAME_LENGTH = 10;
-	private static int PASSWORD_LENGTH = 4;
-	private static int UNLOCK_TIME = 10;
-	private static int GREEN_LED_TIME = 1;
-	private static int RED_LED_TIME = 1;
+	private final static int USERNAME_LENGTH = 10;
+	private final static int PASSWORD_LENGTH = 4;
+	private final static int UNLOCK_TIME = 10;
+	private final static int GREEN_LED_TIME = 1;
+	private final static int RED_LED_TIME = 1;
 	
 	private ElectronicLock frontDoorLock;
 	
@@ -37,6 +38,7 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
 			ElectronicLock bikeExitDoorLock, PinCodeTerminal pinCodeTerminal,
 			BarcodeReader frontDoorBarcodeReader, BarcodeReader bikeExitDoorBarcodeReader,
 			BarcodePrinter barcodePrinter) {
+		
 		this.database = database;
 		
 		this.frontDoorLock = frontDoorLock;
@@ -86,22 +88,28 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
 	 */
 	private void newPasswordInput(String password) {
 		String correctPassword = database.getPassword(storedUsername);
+		
 		if (correctPassword != null && correctPassword.equals(password)) {
-			storedUsername = "";
+			LogAccess.event().log("User " + storedUsername + "unlocked the front entrance door "
+					+ "by entering his/her username/password correctly");
+			
 			frontDoorLock.open(UNLOCK_TIME);
 			pinCodeTerminal.lightLED(PinCodeTerminal.GREEN_LED, GREEN_LED_TIME);
-			//TODO Register checkIn to database
+			database.checkInUser(storedUsername);
 		} else {
-			storedUsername = "";
+			LogAccess.event().log("User " + storedUsername + "failed to unlock the front entrance door "
+					+ "by entering his/her username/password incorrectly");
+			
 			pinCodeTerminal.lightLED(PinCodeTerminal.RED_LED, RED_LED_TIME);
 		}
+		storedUsername = "";
 	}
 
 	@Override
 	public void entryBarcode(String code) {
 		if (database.bikeConnected(code)) {
 			frontDoorLock.open(UNLOCK_TIME);
-			//TODO Register checkIn to database
+			database.checkInUser(database.getBikeOwner(code));
 		}
 	}
 
@@ -110,7 +118,7 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
 		String user = database.getBikeOwner(code);
 		if (user != null && database.userCheckedIn(user)) {
 			bikeExitDoorLock.open(UNLOCK_TIME);
-			//TODO Remove checkIn-status for user. Should no longer be checked in.
+			database.checkOutUser(user);
 		}
 	}
 	
@@ -122,6 +130,11 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
      */
 	public boolean newUser(String username, String password) {
 		return database.createUser(username, password);
+	}
+	
+	public boolean removeUser(String username) {
+		//TODO database method missing
+		return false;
 	}
 	
 	/**
@@ -137,6 +150,10 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
 		}
 		barcodePrinter.printBarcode(bikeID);
 		return true;
+	}
+	
+	public boolean removeBike(String bikeID) {
+		return database.removeBike(bikeID);
 	}
 	
 	/**
@@ -163,7 +180,7 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
      * @return List of Strings with search result.
      */
     public List<String> searchUsername(String username) {
-		return database.searchUsername(username);
+		return database.getUserInfo(username);
 	}
 	
     /**
@@ -172,7 +189,7 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
      * @return List of String with search result.
      */
 	public List<String> searchBikeID(String bikeID) {
-		return database.searchBikeID(bikeID);
+		return database.getUserInfo(database.getBikeOwner(bikeID));
 	}
 	
 }

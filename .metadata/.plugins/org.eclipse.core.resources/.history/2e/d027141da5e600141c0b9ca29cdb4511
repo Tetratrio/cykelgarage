@@ -1,0 +1,12 @@
+package garage.logging;
+
+public abstract class LogAccess {
+	private static Logger eventLogger;
+	private static Logger errorLogger;
+	
+	public static Logger event() {
+		if (eventLogger != null) {
+			
+		}
+	}
+}
