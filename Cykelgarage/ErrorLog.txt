@@ -1,2 +1,0 @@
-[2015-04-19 19:47:57] Database: Failed to connect a new bike
-[2015-04-19 19:47:57] Database exception: Cannot add or update a child row: a foreign key constraint fails (`cykelgarage`.`Bike`, CONSTRAINT `Bike_ibfk_1` FOREIGN KEY (`username`) REFERENCES `User` (`username`))

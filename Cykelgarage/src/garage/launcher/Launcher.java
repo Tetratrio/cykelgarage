@@ -1,5 +1,7 @@
 package garage.launcher;
 
+import java.sql.SQLException;
+
 import test.hardware_simulation.*;
 import garage.controller.Controller;
 import garage.database.Database;
@@ -21,15 +23,24 @@ public abstract class Launcher {
 			}
 			else if (argument.equalsIgnoreCase("test")) {
 				LogAccess.initialize(true);
+				Database db = null;
+				
+				try {
+					db = new Database();
+				} catch (SQLException e) {
+					javax.swing.JOptionPane.showMessageDialog(null, "Kunde ej ansluta till databasen, stänger applikationen...");
+					System.exit(1);
+				}
 				
 				Controller controller = new Controller(
-						new Database(),
+						db,
 						new ElectronicLockTestDriver("Front entrance"),
 						new ElectronicLockTestDriver("Bike exit"),
 						new PinCodeTerminalTestDriver(),
 						new BarcodeReaderEntryTestDriver(),
 						new BarcodeReaderExitTestDriver(),
-						new BarcodePrinterTestDriver());
+						new BarcodePrinterTestDriver()
+						);
 				
 				new BikeGarageGUI(controller);
 			} else {

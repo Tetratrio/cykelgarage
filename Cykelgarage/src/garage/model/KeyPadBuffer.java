@@ -1,25 +1,35 @@
 package garage.model;
 
+import java.util.Arrays;
+
 import garage.hardware.interfaces.*;
+import garage.logging.LogAccess;
 
 public class KeyPadBuffer implements PinCodeTerminalListener {
 	
 	private static int WAITING_TIME = 4;
 	
+	private static int RED_LED_LIGHT_TIME = 1;
+	
 	private KeyPadBufferListener manager;
 	
 	private TimerThread timer = null;
 	
+	PinCodeTerminal pinCodeTerminal;
+	
 	private int bufferSize;
 	private char[] buffer;
+	private int size;
 	private int expectedInput;
 	
 	public KeyPadBuffer(int bufferSize, PinCodeTerminal pinCodeTerminal, KeyPadBufferListener manager) {
 		this.manager = manager;
+		this.pinCodeTerminal = pinCodeTerminal;
 		pinCodeTerminal.register(this);
 		this.bufferSize = bufferSize;
 		buffer = new char[bufferSize];
 		expectedInput = bufferSize;
+		size = 0;
 	}
 	
 	/**
@@ -44,12 +54,16 @@ public class KeyPadBuffer implements PinCodeTerminalListener {
 	 * @param c Value of button that was pressed.
 	 */
 	public void entryCharacter(char c) {
-		buffer[buffer.length] = c;
-		if (buffer.length >= expectedInput) {
-			manager.recieveBuffer(buffer.toString());
+		buffer[size++] = c;
+		if (size >= expectedInput) {
+			char[] buf = Arrays.copyOf(buffer, size);
+			String bufVal = String.valueOf(buf);
 			newBuffer();
+			manager.recieveBuffer(bufVal);
+			timer = null;
+		} else {
+			newTimer();
 		}
-		newTimer();
 	}
 	
 	private void newTimer() {
@@ -59,6 +73,7 @@ public class KeyPadBuffer implements PinCodeTerminalListener {
 	private void newBuffer() {
 		buffer = new char[bufferSize];
 		expectedInput = bufferSize;
+		size = 0;
 	}
 	
 	
@@ -67,7 +82,7 @@ public class KeyPadBuffer implements PinCodeTerminalListener {
 			return;
 		}
 		newBuffer();
-		//TODO Red led lights up
+		pinCodeTerminal.lightLED(PinCodeTerminal.RED_LED, RED_LED_LIGHT_TIME);
 	}
 	
 	private class TimerThread extends Thread implements Runnable {
@@ -83,7 +98,8 @@ public class KeyPadBuffer implements PinCodeTerminalListener {
 			try {
 				Thread.sleep(time);
 			} catch (InterruptedException e) {
-				// TODO Logg stacktrace?
+				LogAccess.error().log("TimerThread: sleep interrupted.");
+				LogAccess.error().log("TimerThread: " + e.getMessage());
 			}
 			manager.timerFinnished(this);
 		}

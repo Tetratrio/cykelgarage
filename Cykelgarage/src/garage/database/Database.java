@@ -18,10 +18,10 @@ public class Database {
 	private final static long FIFTEEN_MINUTES_IN_MILLIS = 15 * 60 * 1000;
 	private Connection conn;
 
-	public Database() {
+	public Database() throws SQLException {
 		if (!openConnection(USERNAME, PASSWORD)) {
-			LogAccess.error().log("Failed to connect to database, exiting application...");
-			System.exit(1);
+			LogAccess.error().log("Failed to connect to the database");
+			throw new SQLException("Failed to connect to the database");
 		}
 	}
 
@@ -134,6 +134,8 @@ public class Database {
 			checkInPS = conn.prepareStatement(checkInSql);
 			checkInPS.setTimestamp(1, curTime);
 			checkInPS.setString(2, username);
+			checkInPS.executeUpdate();
+			conn.setAutoCommit(true);
 		} catch (SQLException e) {
 			logError("Failed to checkin user " + username, e.getMessage());
 		} finally { // close the connection
@@ -170,7 +172,8 @@ public class Database {
 			checkOutPS = conn.prepareStatement(checkOutSql);
 			checkOutPS.setTimestamp(1, new Timestamp(0));
 			checkOutPS.setString(2, username);
-
+			checkOutPS.executeUpdate();
+			conn.setAutoCommit(true);
 		} catch (SQLException e) {
 			logError("Failed to checkout user " + username, e.getMessage());
 		} finally { // close the connection
@@ -256,6 +259,20 @@ public class Database {
 
 		return false;
 
+	}
+	
+	/**
+	 * Delete an existing user. Fails if user has bikes connected
+	 * to the garage
+	 * @param username Username of user to be removed.
+	 * @return True if successful, otherwise false
+	 */
+	public boolean removeUser(String username) {
+		if (!userExists(username) || getBikes(username).isEmpty()) {
+			return false;
+		}
+		
+		return false;
 	}
 
 	/**
@@ -417,7 +434,6 @@ public class Database {
 
 	/**
 	 * 'Disconnect' a bike from this garage.
-	 * 
 	 * @param bikeID The bikes ID.
 	 * @return True if successful, otherwise false.
 	 */

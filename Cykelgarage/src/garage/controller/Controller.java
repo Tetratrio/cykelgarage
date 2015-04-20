@@ -33,7 +33,16 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
 	
 	private String storedUsername = "";
 
-	
+	/**
+	 * Create a new Controller object and assign its hardware to control.
+	 * @param database The database object for database communications.
+	 * @param frontDoorLock Front doorlock hardware.
+	 * @param bikeExitDoorLock Bike exit doorlock hardware. 
+	 * @param pinCodeTerminal Pincode-terminal hardware.
+	 * @param frontDoorBarcodeReader Bike entrance barcode reader hardware.
+	 * @param bikeExitDoorBarcodeReader Bike exit barcode reader hardware.
+	 * @param barcodePrinter Barcode printer hardware.
+	 */
 	public Controller(Database database, ElectronicLock frontDoorLock,
 			ElectronicLock bikeExitDoorLock, PinCodeTerminal pinCodeTerminal,
 			BarcodeReader frontDoorBarcodeReader, BarcodeReader bikeExitDoorBarcodeReader,
@@ -105,21 +114,52 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
 		storedUsername = "";
 	}
 
+	/**
+	 * Recieve a barcode scanned by the bike entrance scanner and process the input.
+	 * @param code Barcode that was scanned.
+	 */
 	@Override
 	public void entryBarcode(String code) {
+		code = fillBarcode(code);
 		if (database.bikeConnected(code)) {
+			LogAccess.event().log("Front door unlocked by scanning barcode " + code);
+			
 			frontDoorLock.open(UNLOCK_TIME);
 			database.checkInUser(database.getBikeOwner(code));
 		}
 	}
 
+	/**
+	 * Recieve a barcode scanned by the bike exit scanner and process the input.
+	 * @param code Barcode that was scanned.
+	 */
 	@Override
 	public void exitBarcode(String code) {
+		code = fillBarcode(code);
 		String user = database.getBikeOwner(code);
 		if (user != null && database.userCheckedIn(user)) {
+			LogAccess.event().log("Bike exit door unlocked by scanning barcode " + code);
+			
 			bikeExitDoorLock.open(UNLOCK_TIME);
 			database.checkOutUser(user);
 		}
+	}
+	
+	/**
+	 * Alter length of barcode to be 13 digits by padding with
+	 * 0's infront of previous barcode.
+	 * @param code Barcode to be padded.
+	 * @return Padded barcode.
+	 */
+	private String fillBarcode(String code) {
+		if (code.length() < 13) {
+			StringBuilder sb = new StringBuilder(code);
+			while (sb.length() < 13) {
+				sb.insert(0, 0);
+			}
+			return sb.toString();
+		}
+		return code;
 	}
 	
 	/**
@@ -132,9 +172,14 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
 		return database.createUser(username, password);
 	}
 	
+	/**
+	 * Delete an existing user. Fails if user has bikes connected
+	 * to the garage
+	 * @param username Username of user to be removed.
+	 * @return True if successful, otherwise false
+	 */
 	public boolean removeUser(String username) {
-		//TODO database method missing
-		return false;
+		return database.removeUser(username);
 	}
 	
 	/**
@@ -152,6 +197,11 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
 		return true;
 	}
 	
+	/**
+	 * 'Disconnect' a bike from this garage.
+	 * @param bikeID The bikes ID.
+	 * @return True if successful, otherwise false.
+	 */
 	public boolean removeBike(String bikeID) {
 		return database.removeBike(bikeID);
 	}
