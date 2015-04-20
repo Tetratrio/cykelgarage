@@ -232,10 +232,9 @@ public class Database {
 	 * @return True if account creation was successful, otherwise false.
 	 */
 	public boolean createUser(String username, String password) {
-		if (userExists(username)) {
+		if (!userExists(username)) {
 			return false;
 		}
-		
 		PreparedStatement createUserPS = null;
 		String createUserSql = "INSERT INTO User (username, password) VALUES (?, ?)";
 
@@ -269,8 +268,7 @@ public class Database {
 	 * @return True if successful, otherwise false
 	 */
 	public boolean removeUser(String username) {
-		if (!userExists(username) || !getBikes(username).isEmpty()) {
-			LogAccess.error().log("Failed to remove user " + username);
+		if (!userExists(username) || getBikes(username).isEmpty()) {
 			return false;
 		}
 		
@@ -295,7 +293,7 @@ public class Database {
 					deleteUserPS.close();
 				}
 			} catch (SQLException e2) {
-				logError("Failed to close sql statement after removing a user", e2.getMessage());
+				logError("Failed to close sql statement after disconnect a bike from the garage", e2.getMessage());
 			}
 
 		}

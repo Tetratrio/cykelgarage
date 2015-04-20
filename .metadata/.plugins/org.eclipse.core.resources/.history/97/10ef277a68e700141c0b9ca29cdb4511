@@ -210,7 +210,7 @@ public class ManipulationTab extends BasicTabPanel implements ActionListener {
 	private void newUser() {
 		boolean success = controller.newUser(regUsrUsrnameTextField.getText(), regUsrPasswordTextField.getText());
 		if (success) {
-			displayMessage("Ny användare " + regUsrUsrnameTextField.getText() + " registrerad");
+			displayMessage("Ny användare " + regUsrUsrnameTextField.getText() + "registrerad");
 		} else {
 			displayMessage("Misslyckades med registrering av ny användare " + regUsrUsrnameTextField.getText());
 		}

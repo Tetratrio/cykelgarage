@@ -232,10 +232,9 @@ public class Database {
 	 * @return True if account creation was successful, otherwise false.
 	 */
 	public boolean createUser(String username, String password) {
-		if (userExists(username)) {
+		if (!userExists(username)) {
 			return false;
 		}
-		
 		PreparedStatement createUserPS = null;
 		String createUserSql = "INSERT INTO User (username, password) VALUES (?, ?)";
 
@@ -269,37 +268,10 @@ public class Database {
 	 * @return True if successful, otherwise false
 	 */
 	public boolean removeUser(String username) {
-		if (!userExists(username) || !getBikes(username).isEmpty()) {
-			LogAccess.error().log("Failed to remove user " + username);
+		if (!userExists(username) || getBikes(username).isEmpty()) {
 			return false;
 		}
 		
-		PreparedStatement deleteUserPS = null;
-		String deleteBikeSql = "DELETE FROM User WHERE username = ?";
-
-		try {
-			deleteUserPS = conn.prepareStatement(deleteBikeSql);
-			deleteUserPS.setString(1, username);
-
-
-			int deletedUsers = deleteUserPS.executeUpdate();
-
-			if (deletedUsers == 1) {
-				return true;
-			}
-		} catch (SQLException e) {
-			logError("Failed to remove user", e.getMessage());
-		} finally {
-			try {
-				if (deleteUserPS != null) {
-					deleteUserPS.close();
-				}
-			} catch (SQLException e2) {
-				logError("Failed to close sql statement after removing a user", e2.getMessage());
-			}
-
-		}
-
 		return false;
 	}
 

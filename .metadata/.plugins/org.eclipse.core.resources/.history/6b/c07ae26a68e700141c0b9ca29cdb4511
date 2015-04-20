@@ -235,7 +235,6 @@ public class Database {
 		if (userExists(username)) {
 			return false;
 		}
-		
 		PreparedStatement createUserPS = null;
 		String createUserSql = "INSERT INTO User (username, password) VALUES (?, ?)";
 
@@ -269,7 +268,7 @@ public class Database {
 	 * @return True if successful, otherwise false
 	 */
 	public boolean removeUser(String username) {
-		if (!userExists(username) || !getBikes(username).isEmpty()) {
+		if (!userExists(username) || getBikes(username).isEmpty()) {
 			LogAccess.error().log("Failed to remove user " + username);
 			return false;
 		}
