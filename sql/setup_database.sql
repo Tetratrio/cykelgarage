@@ -7,7 +7,7 @@ CREATE TABLE User (
   username CHAR(10),
   info TEXT,
   password CHAR(4),
-  checkedIn TIMESTAMP DEFAULT 0,
+  checkedIn TIMESTAMP DEFAULT '1971-01-01',
     PRIMARY KEY (username)
 );
 

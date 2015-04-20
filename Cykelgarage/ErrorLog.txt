@@ -1,0 +1,2 @@
+[2015-04-20 17:32:06] Database: Failed to check if a user was checked in
+[2015-04-20 17:32:06] Database exception: Cannot convert value '0000-00-00 00:00:00' from column 1 to TIMESTAMP.
