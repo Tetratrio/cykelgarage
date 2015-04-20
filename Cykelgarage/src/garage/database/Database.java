@@ -170,7 +170,7 @@ public class Database {
 			lockPS.executeQuery();
 
 			checkOutPS = conn.prepareStatement(checkOutSql);
-			checkOutPS.setTimestamp(1, new Timestamp(0));
+			checkOutPS.setTimestamp(1, new Timestamp(1000));
 			checkOutPS.setString(2, username);
 			checkOutPS.executeUpdate();
 			conn.setAutoCommit(true);

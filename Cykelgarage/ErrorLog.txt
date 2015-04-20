@@ -1,2 +1,2 @@
-[2015-04-20 17:32:06] Database: Failed to check if a user was checked in
-[2015-04-20 17:32:06] Database exception: Cannot convert value '0000-00-00 00:00:00' from column 1 to TIMESTAMP.
+[2015-04-20 17:49:31] Database: Failed to checkout user 9109258474
+[2015-04-20 17:49:31] Database exception: Data truncation: Incorrect datetime value: '1970-01-01 01:00:00' for column 'checkedIn' at row 1
