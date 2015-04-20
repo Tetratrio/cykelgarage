@@ -1,7 +1,0 @@
-package garage.gui;
-
-import javax.swing.*;
-
-public class BikeGarageGUI extends JFrame {
-
-}

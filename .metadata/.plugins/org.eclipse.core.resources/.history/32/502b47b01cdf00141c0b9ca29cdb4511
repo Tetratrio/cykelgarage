@@ -1,5 +1,0 @@
-package garage.model;
-
-public interface TimerManager {
-	
-}

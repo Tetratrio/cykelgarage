@@ -1,7 +1,0 @@
-package garage.gui.tabs;
-
-import javax.swing.*;
-
-public class BasicTabPane extends JPanel {
-
-}
