@@ -1,4 +1,4 @@
 *.class
-.DS_Store
-.gitignore
-eclimd.log
+*.DS_Store
+*.gitignore
+*eclimd.log
