@@ -7,7 +7,7 @@ CREATE TABLE User (
   username CHAR(10),
   info TEXT,
   password CHAR(4),
-  checkedIn TIMESTAMP,
+  checkedIn TIMESTAMP DEFAULT 0,
     PRIMARY KEY (username)
 );
 
@@ -17,12 +17,6 @@ CREATE TABLE Bike (
     PRIMARY KEY (bikeId),
     FOREIGN KEY (username) REFERENCES User (username)
 );
-
-insert into User (username, password)
-            values ("9003241974", "1337");
-
-insert into Bike (username)
-            values ("9003241974");
 
 
 set foreign_key_checks = 1;

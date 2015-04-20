@@ -34,8 +34,6 @@ public abstract class Launcher {
 				}
 				
 				Controller controller = new Controller(
-						MAX_BIKES,
-						true,
 						db,
 						new ElectronicLockTestDriver("Front entrance"),
 						new ElectronicLockTestDriver("Bike exit"),

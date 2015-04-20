@@ -191,7 +191,7 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
 			if (gui) {
 				JOptionPane.showMessageDialog(null, "Cyklar tillhörande en användare som ska avregistreras måste först tas bort");
 			} else {
-				System.err.println("Cyklar tillhörande en användare som ska avregistreras måste först tas bort");
+				
 			}
 			return false;
 		}

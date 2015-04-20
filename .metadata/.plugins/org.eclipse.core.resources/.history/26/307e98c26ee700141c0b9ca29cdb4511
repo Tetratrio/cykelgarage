@@ -2,8 +2,6 @@ package garage.controller;
 
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import garage.database.Database;
 import garage.logging.*;
 import garage.model.*;
@@ -20,8 +18,6 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
 	private final static int UNLOCK_TIME = 10;
 	private final static int GREEN_LED_TIME = 1;
 	private final static int RED_LED_TIME = 1;
-	
-	private int maxBikes;
 	
 	private boolean gui;
 	
@@ -53,7 +49,6 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
 			ElectronicLock bikeExitDoorLock, PinCodeTerminal pinCodeTerminal,
 			BarcodeReader frontDoorBarcodeReader, BarcodeReader bikeExitDoorBarcodeReader,
 			BarcodePrinter barcodePrinter) {
-		this.maxBikes = maxBikes;
 		this.gui = gui;
 		
 		this.database = database;
@@ -187,14 +182,6 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
 	 * @return True if successful, otherwise false
 	 */
 	public boolean removeUser(String username) {
-		if (!database.getBikes(username).isEmpty()) {
-			if (gui) {
-				JOptionPane.showMessageDialog(null, "Cyklar tillhörande en användare som ska avregistreras måste först tas bort");
-			} else {
-				System.err.println("Cyklar tillhörande en användare som ska avregistreras måste först tas bort");
-			}
-			return false;
-		}
 		return database.removeUser(username);
 	}
 	
@@ -205,13 +192,6 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
      * @return True if successful, otherwise false.
      */
 	public boolean connectNewBike(String username) {
-		if (database.getBikes(null).size() >= maxBikes) {
-			if (gui) {
-				JOptionPane.showMessageDialog(null, "Max antal cyklar (" + maxBikes + ") får ej överskridas");
-			} else {
-				System.err.println("Max antal cyklar (" + maxBikes + ") får ej överskridas");
-			}
-		}
 		String bikeID = database.connectNewBike(username);
 		if (bikeID == null) {
 			return false;

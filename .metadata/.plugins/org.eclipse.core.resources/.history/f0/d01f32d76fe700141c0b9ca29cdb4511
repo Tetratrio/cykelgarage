@@ -187,14 +187,6 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
 	 * @return True if successful, otherwise false
 	 */
 	public boolean removeUser(String username) {
-		if (!database.getBikes(username).isEmpty()) {
-			if (gui) {
-				JOptionPane.showMessageDialog(null, "Cyklar tillhörande en användare som ska avregistreras måste först tas bort");
-			} else {
-				System.err.println("Cyklar tillhörande en användare som ska avregistreras måste först tas bort");
-			}
-			return false;
-		}
 		return database.removeUser(username);
 	}
 	

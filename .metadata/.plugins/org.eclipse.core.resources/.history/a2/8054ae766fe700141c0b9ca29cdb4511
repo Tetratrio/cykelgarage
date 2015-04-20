@@ -14,7 +14,6 @@ public abstract class Launcher {
 										"--help\t\tDisplay usage string, then exit" +
 										"Arguments:\n" +
 										"test\t\tRun program in test mode.";
-	private final static int MAX_BIKES = 40;
 	
 	public static void main(String[] args) {
 		for (String argument : args) {
@@ -34,8 +33,6 @@ public abstract class Launcher {
 				}
 				
 				Controller controller = new Controller(
-						MAX_BIKES,
-						true,
 						db,
 						new ElectronicLockTestDriver("Front entrance"),
 						new ElectronicLockTestDriver("Bike exit"),

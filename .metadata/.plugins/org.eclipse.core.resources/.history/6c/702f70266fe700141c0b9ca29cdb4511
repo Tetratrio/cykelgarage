@@ -187,14 +187,6 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
 	 * @return True if successful, otherwise false
 	 */
 	public boolean removeUser(String username) {
-		if (!database.getBikes(username).isEmpty()) {
-			if (gui) {
-				JOptionPane.showMessageDialog(null, "Cyklar tillhörande en användare som ska avregistreras måste först tas bort");
-			} else {
-				System.err.println("Cyklar tillhörande en användare som ska avregistreras måste först tas bort");
-			}
-			return false;
-		}
 		return database.removeUser(username);
 	}
 	
@@ -207,9 +199,9 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
 	public boolean connectNewBike(String username) {
 		if (database.getBikes(null).size() >= maxBikes) {
 			if (gui) {
-				JOptionPane.showMessageDialog(null, "Max antal cyklar (" + maxBikes + ") får ej överskridas");
+				JOptionPane.showMessageDialog(null, "");
 			} else {
-				System.err.println("Max antal cyklar (" + maxBikes + ") får ej överskridas");
+				
 			}
 		}
 		String bikeID = database.connectNewBike(username);
