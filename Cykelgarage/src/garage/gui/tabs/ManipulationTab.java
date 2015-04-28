@@ -6,7 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
-import garage.controller.Controller;
+import garage.controller.BicycleGarageManager;
 
 @SuppressWarnings("serial")
 public class ManipulationTab extends BasicTabPanel implements ActionListener {
@@ -42,8 +42,8 @@ public class ManipulationTab extends BasicTabPanel implements ActionListener {
     private JTextField addBikeUsrnameTextField;
     private JTextField remBikeBikeIDTextField;
 
-	public ManipulationTab(Controller controller) {
-		super(controller);
+	public ManipulationTab(BicycleGarageManager bicycleGarageManager) {
+		super(bicycleGarageManager);
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		JPanel p;
@@ -208,7 +208,20 @@ public class ManipulationTab extends BasicTabPanel implements ActionListener {
 	}
 	
 	private void newUser() {
-		boolean success = controller.newUser(regUsrUsrnameTextField.getText(), regUsrPasswordTextField.getText());
+		String username = regUsrUsrnameTextField.getText();
+		String password = regUsrPasswordTextField.getText();
+		
+		if (username.length() != 10 || !username.matches("[0-9]+")) {
+			displayMessage("Ett användarnamn måste bestå av 10 siffror");
+			return;
+		}
+		
+		if (password.length() != 4 || !password.matches("[0-9]+")) {
+			displayMessage("Ett lösenord måste bestå av 4 siffror");
+			return;
+		}
+		
+		boolean success = bicycleGarageManager.newUser(username, password);
 		if (success) {
 			displayMessage("Ny användare " + regUsrUsrnameTextField.getText() + " registrerad");
 		} else {
@@ -218,7 +231,7 @@ public class ManipulationTab extends BasicTabPanel implements ActionListener {
 	}
 	
 	private void removeUser() {
-		boolean success = controller.removeUser(unregUsrUsrnameTextField.getText());
+		boolean success = bicycleGarageManager.removeUser(unregUsrUsrnameTextField.getText());
 		if (success) {
 			displayMessage("Användare " + unregUsrUsrnameTextField.getText() + " borttagen");
 		}
@@ -229,7 +242,7 @@ public class ManipulationTab extends BasicTabPanel implements ActionListener {
 	}
 	
 	private void addBike() {
-		boolean success = controller.connectNewBike(addBikeUsrnameTextField.getText());
+		boolean success = bicycleGarageManager.connectNewBike(addBikeUsrnameTextField.getText());
 		if (success) {
 			displayMessage("Ny cykel ansluten till cykelgaraget");
 			displayMessage("Skriver ut ny streckkod...");
@@ -240,7 +253,7 @@ public class ManipulationTab extends BasicTabPanel implements ActionListener {
 	}
 	
 	private void removeBike() {
-		boolean success = controller.removeBike(remBikeBikeIDTextField.getText());
+		boolean success = bicycleGarageManager.removeBike(remBikeBikeIDTextField.getText());
 		if (success) {
 			displayMessage("Tog bort cykel " + remBikeBikeIDTextField.getText());
 		} else {

@@ -7,7 +7,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
-import garage.controller.Controller;
+import garage.controller.BicycleGarageManager;
 
 @SuppressWarnings("serial")
 public class SearchTab extends BasicTabPanel implements ActionListener {
@@ -22,8 +22,8 @@ public class SearchTab extends BasicTabPanel implements ActionListener {
 	private JComboBox<String> searchMenu;
 	private JTextField searchTextField;
 	
-	public SearchTab(Controller controller) {
-		super(controller);
+	public SearchTab(BicycleGarageManager bicycleGarageManager) {
+		super(bicycleGarageManager);
 		this.setLayout(new BorderLayout());
 		
 		JPanel searchPanel = new JPanel();
@@ -75,10 +75,10 @@ public class SearchTab extends BasicTabPanel implements ActionListener {
 		String searchFor = searchTextField.getText();
 		switch (searchMenu.getSelectedIndex()) {
 			case 0:
-				fillSearchResults(controller.searchUsername(searchFor));
+				fillSearchResults(bicycleGarageManager.searchUsername(searchFor));
 				break;
 			case 1:
-				fillSearchResults(controller.searchBikeID(searchFor));
+				fillSearchResults(bicycleGarageManager.searchBikeID(searchFor));
 				break;
 			default:
 				displayMessage("GUI Error: Selected search menu option should not exist.");

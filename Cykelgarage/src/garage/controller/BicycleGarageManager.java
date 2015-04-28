@@ -14,7 +14,7 @@ import garage.hardware.interfaces.*;
  * hardware input and output through hardware interfaces and
  * hardware extensions.
  */
-public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
+public class BicycleGarageManager implements KeyPadBufferListener, BarcodeReaderListener, PinCodeTerminalListener {
 	private final static int USERNAME_LENGTH = 10;
 	private final static int PASSWORD_LENGTH = 4;
 	private final static int UNLOCK_TIME = 10;
@@ -49,7 +49,7 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
 	 * @param bikeExitDoorBarcodeReader Bike exit barcode reader hardware.
 	 * @param barcodePrinter Barcode printer hardware.
 	 */
-	public Controller(int maxBikes, boolean gui, Database database, ElectronicLock frontDoorLock,
+	public BicycleGarageManager(int maxBikes, boolean gui, Database database, ElectronicLock frontDoorLock,
 			ElectronicLock bikeExitDoorLock, PinCodeTerminal pinCodeTerminal,
 			BarcodeReader frontDoorBarcodeReader, BarcodeReader bikeExitDoorBarcodeReader,
 			BarcodePrinter barcodePrinter) {
@@ -58,14 +58,25 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
 		
 		this.database = database;
 		
-		this.frontDoorLock = frontDoorLock;
-		this.bikeExitDoorLock = bikeExitDoorLock;
-		this.pinCodeTerminal = pinCodeTerminal;
+		registerHardwareDrivers(barcodePrinter, frontDoorLock, bikeExitDoorLock, pinCodeTerminal);
+		
 		frontDoorBarcodeReader.register(this);
 		bikeExitDoorBarcodeReader.register(this);
-		this.barcodePrinter = barcodePrinter;
 		
 		buffer = new KeyPadBuffer(USERNAME_LENGTH, pinCodeTerminal, this);
+	}
+	
+	/**
+	 * Register hardware so that BicycleGarageManager knows which drivers to access.
+	 */
+	public void registerHardwareDrivers(BarcodePrinter printer, ElectronicLock entryLock,
+										ElectronicLock exitLock, PinCodeTerminal terminal) {
+		this.barcodePrinter = printer;
+		this.pinCodeTerminal = terminal;
+		this.frontDoorLock = entryLock;
+		this.bikeExitDoorLock = exitLock;
+		
+		pinCodeTerminal.register(this);
 	}
 		
 	
@@ -120,6 +131,15 @@ public class Controller implements KeyPadBufferListener, BarcodeReaderListener {
 			pinCodeTerminal.lightLED(PinCodeTerminal.RED_LED, RED_LED_TIME);
 		}
 		storedUsername = "";
+	}
+	
+	/**
+	 * Method called by the KeyPad interface when a button
+	 * is pressed.
+	 * @param c Value of button that was pressed.
+	 */
+	public void entryCharacter(char c) {
+		buffer.recieveChar(c);
 	}
 
 	/**

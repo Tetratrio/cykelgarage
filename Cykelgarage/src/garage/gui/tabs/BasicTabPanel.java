@@ -1,15 +1,15 @@
 package garage.gui.tabs;
 
-import garage.controller.Controller;
+import garage.controller.BicycleGarageManager;
 
 import javax.swing.*;
 
 @SuppressWarnings("serial")
 public abstract class BasicTabPanel extends JPanel {
-	protected Controller controller;
+	protected BicycleGarageManager bicycleGarageManager;
 	
-	public BasicTabPanel(Controller controller) {
-		this.controller = controller;
+	public BasicTabPanel(BicycleGarageManager bicycleGarageManager) {
+		this.bicycleGarageManager = bicycleGarageManager;
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
 	

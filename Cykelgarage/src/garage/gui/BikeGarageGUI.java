@@ -1,6 +1,6 @@
 package garage.gui;
 
-import garage.controller.Controller;
+import garage.controller.BicycleGarageManager;
 import garage.gui.tabs.*;
 
 import java.awt.BorderLayout;
@@ -20,21 +20,21 @@ public class BikeGarageGUI extends JFrame implements ChangeListener {
 	
 	private ArrayList<BasicTabPanel> tabs;
 	
-	public BikeGarageGUI(Controller controller) {
+	public BikeGarageGUI(BicycleGarageManager bicycleGarageManager) {
 		tabs = new ArrayList<BasicTabPanel>();
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addChangeListener(this);
 		BasicTabPanel basicPanel;
 		
-		basicPanel = new ManipulationTab(controller);
+		basicPanel = new ManipulationTab(bicycleGarageManager);
 		tabbedPane.addTab(MANIPULATION_TAB_TITLE, null, basicPanel, MANIPULATION_TAB_DESCRIPTION);
 		tabs.add(basicPanel);
 		
-		basicPanel = new ViewTab(controller);
+		basicPanel = new ViewTab(bicycleGarageManager);
 		tabbedPane.addTab(VIEW_TAB_TITLE, null, basicPanel, VIEW_TAB_DESCRIPTION);
 		tabs.add(basicPanel);
 		
-		basicPanel = new SearchTab(controller);
+		basicPanel = new SearchTab(bicycleGarageManager);
 		tabbedPane.addTab(SEARCH_TAB_TITLE, null, basicPanel, SEARCH_TAB_DESCRIPTION);
 		tabs.add(basicPanel);
 		

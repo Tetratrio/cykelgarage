@@ -1,2 +1,0 @@
-[2015-04-20 17:49:30] Front door unlocked by scanning barcode 0000000000005
-[2015-04-20 17:49:30] Bike exit door unlocked by scanning barcode 0000000000005

@@ -6,7 +6,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.*;
 
-import garage.controller.Controller;
+import garage.controller.BicycleGarageManager;
 
 @SuppressWarnings("serial")
 public class ViewTab extends BasicTabPanel implements ListSelectionListener {
@@ -17,8 +17,8 @@ public class ViewTab extends BasicTabPanel implements ListSelectionListener {
 	
 	private DefaultListModel<String> bikeList;
 
-	public ViewTab(Controller controller) {
-		super(controller);
+	public ViewTab(BicycleGarageManager bicycleGarageManager) {
+		super(bicycleGarageManager);
 		this.setLayout(new GridLayout(1, 2));
 		
 		JPanel leftListPanel = new JPanel();
@@ -45,7 +45,7 @@ public class ViewTab extends BasicTabPanel implements ListSelectionListener {
 	@Override
 	public void notifyTabChange() {
 		userList.removeAllElements();
-		List<String> usernameList = controller.getUsers();
+		List<String> usernameList = bicycleGarageManager.getUsers();
 		for (String username : usernameList) {
 			userList.addElement(username);
 		}
@@ -56,7 +56,7 @@ public class ViewTab extends BasicTabPanel implements ListSelectionListener {
 		bikeList.removeAllElements();
 		int selectedIndex = graphicalUserList.getSelectedIndex();
 		if (selectedIndex != -1) {
-			List<String> bikeIDList = controller.getBikes(userList.get(selectedIndex));
+			List<String> bikeIDList = bicycleGarageManager.getBikes(userList.get(selectedIndex));
 			for (String bikeID : bikeIDList) {
 				bikeList.addElement(bikeID);
 			}

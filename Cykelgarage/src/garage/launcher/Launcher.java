@@ -3,7 +3,7 @@ package garage.launcher;
 import java.sql.SQLException;
 
 import test.hardware_simulation.*;
-import garage.controller.Controller;
+import garage.controller.BicycleGarageManager;
 import garage.database.Database;
 import garage.gui.BikeGarageGUI;
 import garage.logging.LogAccess;
@@ -17,6 +17,10 @@ public abstract class Launcher {
 	private final static int MAX_BIKES = 40;
 	
 	public static void main(String[] args) {
+		/* For the evaluationprocess 'test' option is forced */
+		args = new String[1];
+		args[0] = "test";
+		
 		for (String argument : args) {
 			if (argument.equalsIgnoreCase("--help")) {
 				System.out.println(usage);
@@ -33,7 +37,7 @@ public abstract class Launcher {
 					System.exit(1);
 				}
 				
-				Controller controller = new Controller(
+				BicycleGarageManager bicycleGarageManager = new BicycleGarageManager(
 						MAX_BIKES,
 						true,
 						db,
@@ -45,7 +49,7 @@ public abstract class Launcher {
 						new BarcodePrinterTestDriver()
 						);
 				
-				new BikeGarageGUI(controller);
+				new BikeGarageGUI(bicycleGarageManager);
 			} else {
 				System.err.println("Invalid argument \"" + argument + "\"");
 				System.err.println(usage);

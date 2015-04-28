@@ -5,7 +5,7 @@ import java.util.Arrays;
 import garage.hardware.interfaces.*;
 import garage.logging.LogAccess;
 
-public class KeyPadBuffer implements PinCodeTerminalListener {
+public class KeyPadBuffer {
 	
 	private static int WAITING_TIME = 4;
 	
@@ -25,7 +25,6 @@ public class KeyPadBuffer implements PinCodeTerminalListener {
 	public KeyPadBuffer(int bufferSize, PinCodeTerminal pinCodeTerminal, KeyPadBufferListener manager) {
 		this.manager = manager;
 		this.pinCodeTerminal = pinCodeTerminal;
-		pinCodeTerminal.register(this);
 		this.bufferSize = bufferSize;
 		buffer = new char[bufferSize];
 		expectedInput = bufferSize;
@@ -46,6 +45,7 @@ public class KeyPadBuffer implements PinCodeTerminalListener {
 					"Cannot set expect input to a number larger than BUFFER_SIZE");
 		}
 		expectedInput = n;
+		newTimer();
 	}
 	
 	/**
@@ -53,7 +53,7 @@ public class KeyPadBuffer implements PinCodeTerminalListener {
 	 * is pressed.
 	 * @param c Value of button that was pressed.
 	 */
-	public void entryCharacter(char c) {
+	public void recieveChar(char c) {
 		buffer[size++] = c;
 		if (size >= expectedInput) {
 			char[] buf = Arrays.copyOf(buffer, size);
