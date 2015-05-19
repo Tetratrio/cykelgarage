@@ -22,6 +22,14 @@ public class KeyPadBuffer {
 	private int size;
 	private int expectedInput;
 	
+	/**
+	 * Create a new KeyPadBuffer object which saves input
+	 * until the expected amount of input is recieved, it will
+	 * pass that input to the manager.
+	 * @param bufferSize Original size of the buffer.
+	 * @param pinCodeTerminal PIN-codeterminal used for lighting LEDs.
+	 * @param manager Manager that recieves the buffer when its full.
+	 */
 	public KeyPadBuffer(int bufferSize, PinCodeTerminal pinCodeTerminal, KeyPadBufferListener manager) {
 		this.manager = manager;
 		this.pinCodeTerminal = pinCodeTerminal;
@@ -49,9 +57,8 @@ public class KeyPadBuffer {
 	}
 	
 	/**
-	 * Method called by the KeyPad interface when a button
-	 * is pressed.
-	 * @param c Value of button that was pressed.
+	 * Recieve a new char and add it to the buffer.
+	 * @param c Character to recieve.
 	 */
 	public void recieveChar(char c) {
 		buffer[size++] = c;
@@ -59,8 +66,8 @@ public class KeyPadBuffer {
 			char[] buf = Arrays.copyOf(buffer, size);
 			String bufVal = String.valueOf(buf);
 			newBuffer();
-			manager.recieveBuffer(bufVal);
 			timer = null;
+			manager.recieveBuffer(bufVal);
 		} else {
 			newTimer();
 		}
@@ -94,6 +101,11 @@ public class KeyPadBuffer {
 			this.start();
 		}
 		
+		/**
+		 * This method starts a timer by putting the new thread
+		 * to sleep for set amount of time. When the set time
+		 * has passed it notifies its manager.
+		 */
 		public void run() {
 			try {
 				Thread.sleep(time);

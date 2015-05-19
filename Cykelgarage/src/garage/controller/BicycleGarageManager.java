@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 import garage.database.Database;
 import garage.logging.*;
 import garage.model.*;
+import garage.gui.BicycleGarageGUI;
 import garage.hardware.interfaces.*;
 
 /**
@@ -15,6 +16,7 @@ import garage.hardware.interfaces.*;
  * hardware extensions.
  */
 public class BicycleGarageManager implements KeyPadBufferListener, BarcodeReaderListener, PinCodeTerminalListener {
+	public final static int DEFAULT_MAX_BIKES = 40;
 	private final static int USERNAME_LENGTH = 10;
 	private final static int PASSWORD_LENGTH = 4;
 	private final static int UNLOCK_TIME = 10;
@@ -43,18 +45,17 @@ public class BicycleGarageManager implements KeyPadBufferListener, BarcodeReader
 	 * Create a new Controller object and assign its hardware to control.
 	 * @param database The database object for database communications.
 	 * @param frontDoorLock Front doorlock hardware.
-	 * @param bikeExitDoorLock Bike exit doorlock hardware. 
+	 * @param bikeExitDoorLock Bike exit doorlock hardware.
 	 * @param pinCodeTerminal Pincode-terminal hardware.
 	 * @param frontDoorBarcodeReader Bike entrance barcode reader hardware.
 	 * @param bikeExitDoorBarcodeReader Bike exit barcode reader hardware.
 	 * @param barcodePrinter Barcode printer hardware.
 	 */
-	public BicycleGarageManager(int maxBikes, boolean gui, Database database, ElectronicLock frontDoorLock,
+	public BicycleGarageManager(boolean gui, Database database, ElectronicLock frontDoorLock,
 			ElectronicLock bikeExitDoorLock, PinCodeTerminal pinCodeTerminal,
 			BarcodeReader frontDoorBarcodeReader, BarcodeReader bikeExitDoorBarcodeReader,
 			BarcodePrinter barcodePrinter) {
-		this.maxBikes = maxBikes;
-		this.gui = gui;
+		maxBikes = (this.gui = gui) ? BicycleGarageGUI.getMaxBikes() : DEFAULT_MAX_BIKES;
 		
 		this.database = database;
 		
@@ -111,7 +112,7 @@ public class BicycleGarageManager implements KeyPadBufferListener, BarcodeReader
 	
 	/**
 	 * Method handles new password input. If password is correct, unlock
-	 * front door. If password is incorrect, light up red LED.
+	 * front door and light up green LED. If password is incorrect, light up red LED.
 	 * @param password String to be compared to actual password for user.
 	 */
 	private void newPasswordInput(String password) {
@@ -191,7 +192,7 @@ public class BicycleGarageManager implements KeyPadBufferListener, BarcodeReader
 	}
 	
 	/**
-     * Create a new user account.
+     * Create a new user account and save it to the database.
      * @param username Username for the account.
      * @param password Password for the account.
      * @return True if account creation was successful, otherwise false.
@@ -201,7 +202,7 @@ public class BicycleGarageManager implements KeyPadBufferListener, BarcodeReader
 	}
 	
 	/**
-	 * Delete an existing user. Fails if user has bikes connected
+	 * Delete an existing user from the database. Fails if user has bikes connected
 	 * to the garage
 	 * @param username Username of user to be removed.
 	 * @return True if successful, otherwise false
@@ -220,14 +221,14 @@ public class BicycleGarageManager implements KeyPadBufferListener, BarcodeReader
 	
 	/**
      * Connect a new bike to this garage and print its new
-     * barcode if successful.
+     * barcode if successful. Saves the bike in the database.
      * @param username The username associated with the bike.
      * @return True if successful, otherwise false.
      */
 	public boolean connectNewBike(String username) {
 		if (database.getBikes(null).size() >= maxBikes) {
 			if (gui) {
-				JOptionPane.showMessageDialog(null, "Max antal cyklar (" + maxBikes + ") får ej överskridas");
+				BicycleGarageGUI.showMessage("Max antal cyklar (" + maxBikes + ") får ej överskridas");
 			} else {
 				System.err.println("Max antal cyklar (" + maxBikes + ") får ej överskridas");
 			}
@@ -241,7 +242,8 @@ public class BicycleGarageManager implements KeyPadBufferListener, BarcodeReader
 	}
 	
 	/**
-	 * 'Disconnect' a bike from this garage.
+	 * 'Disconnect' a bike from this garage. Removes the bike
+	 * from the database.
 	 * @param bikeID The bikes ID.
 	 * @return True if successful, otherwise false.
 	 */
@@ -250,7 +252,7 @@ public class BicycleGarageManager implements KeyPadBufferListener, BarcodeReader
 	}
 	
 	/**
-	 * Get all Bike ID's of bikes belonging to a specific user.
+	 * Get all Bike ID's of bikes belonging to a specific user from the database.
 	 * @param username Username of user whose bikes are requested.
 	 * If null method will return all bikes in the bike-garage.
 	 * @return List of bikes ID's.
@@ -260,7 +262,7 @@ public class BicycleGarageManager implements KeyPadBufferListener, BarcodeReader
 	}
 	
 	/**
-	 * Get all usernames of users registered to this garage.
+	 * Get all usernames of users registered to this garage from the database.
 	 * @return List of usernames.
 	 */
 	public List<String> getUsers() {
@@ -268,7 +270,7 @@ public class BicycleGarageManager implements KeyPadBufferListener, BarcodeReader
 	}
 	
 	/**
-     * Search for userinfo by username.
+     * Search for userinfo by username in the database.
      * @param username Username to look for.
      * @return List of Strings with search result.
      */
@@ -277,9 +279,9 @@ public class BicycleGarageManager implements KeyPadBufferListener, BarcodeReader
 	}
 	
     /**
-     * Search for bikeinfo by bike ID.
+     * Search for bikeinfo by bike ID in the database.
      * @param bikeID Bike ID to look for.
-     * @return List of String with search result.
+     * @return List of Strings with search result.
      */
 	public List<String> searchBikeID(String bikeID) {
 		return database.getUserInfo(database.getBikeOwner(bikeID));

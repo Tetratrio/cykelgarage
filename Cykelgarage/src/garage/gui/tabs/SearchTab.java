@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
 import garage.controller.BicycleGarageManager;
+import garage.gui.BicycleGarageGUI;
+import garage.logging.LogAccess;
 
 @SuppressWarnings("serial")
 public class SearchTab extends BasicTabPanel implements ActionListener {
@@ -81,7 +83,8 @@ public class SearchTab extends BasicTabPanel implements ActionListener {
 				fillSearchResults(bicycleGarageManager.searchBikeID(searchFor));
 				break;
 			default:
-				displayMessage("GUI Error: Selected search menu option should not exist.");
+				BicycleGarageGUI.showMessage("GUI Error: Selected search menu option should not exist.");
+				LogAccess.error().log("GUI Error: Selected search menu option should not exist.");
 				break;
 		}
 	}

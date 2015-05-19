@@ -16,8 +16,5 @@ public abstract class BasicTabPanel extends JPanel {
 	public void notifyTabChange() {
 		
 	}
-	
-	protected void displayMessage(String msg) {
-		JOptionPane.showMessageDialog(null, msg);
-	}
+
 }

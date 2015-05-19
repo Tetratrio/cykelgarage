@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import test.hardware_simulation.*;
 import garage.controller.BicycleGarageManager;
 import garage.database.Database;
-import garage.gui.BikeGarageGUI;
+import garage.gui.BicycleGarageGUI;
 import garage.logging.LogAccess;
 
 public abstract class Launcher {
@@ -14,7 +14,6 @@ public abstract class Launcher {
 										"--help\t\tDisplay usage string, then exit" +
 										"Arguments:\n" +
 										"test\t\tRun program in test mode.";
-	private final static int MAX_BIKES = 40;
 	
 	public static void main(String[] args) {
 		/* For the evaluationprocess 'test' option is forced */
@@ -38,7 +37,6 @@ public abstract class Launcher {
 				}
 				
 				BicycleGarageManager bicycleGarageManager = new BicycleGarageManager(
-						MAX_BIKES,
 						true,
 						db,
 						new ElectronicLockTestDriver("Front entrance"),
@@ -49,7 +47,7 @@ public abstract class Launcher {
 						new BarcodePrinterTestDriver()
 						);
 				
-				new BikeGarageGUI(bicycleGarageManager);
+				new BicycleGarageGUI(bicycleGarageManager);
 			} else {
 				System.err.println("Invalid argument \"" + argument + "\"");
 				System.err.println(usage);
@@ -57,6 +55,6 @@ public abstract class Launcher {
 			}
 		}
 		
-		//Start application here...
+		//Start application normally here...
 	}
 }

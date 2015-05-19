@@ -18,6 +18,11 @@ public class Database {
 	private final static long FIFTEEN_MINUTES_IN_MILLIS = 15 * 60 * 1000;
 	private Connection conn;
 
+	/**
+	 * Create a new database object for communication with
+	 * the database. Tries to open a connection to the database,
+	 * @throws SQLException Thrown if connection to the database failed.
+	 */
 	public Database() throws SQLException {
 		if (!openConnection(USERNAME, PASSWORD)) {
 			LogAccess.error().log("Failed to connect to the database");
@@ -27,8 +32,7 @@ public class Database {
 
 	/**
 	 * Open a connection to the database, using the specified username and
-	 * password
-	 * 
+	 * password.
 	 * @return true if the connection was successful, false if the username and
 	 *         password were not recognized, or if the JDBC driver wasn't found.
 	 */
@@ -66,7 +70,6 @@ public class Database {
 
 	/**
 	 * Check if the connection to the database has been established
-	 * 
 	 * @return true if the connection has been established
 	 */
 	public boolean isConnected() {
@@ -190,7 +193,6 @@ public class Database {
 
 	/**
 	 * Connect a new bike to this garage and recieve its new ID value.
-	 * 
 	 * @param username The username associated with the bike.
 	 * @return null if unsuccessful, otherwise the bikes new ID value.
 	 */

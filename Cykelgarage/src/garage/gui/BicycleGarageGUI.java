@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 @SuppressWarnings("serial")
-public class BikeGarageGUI extends JFrame implements ChangeListener {
+public class BicycleGarageGUI extends JFrame implements ChangeListener {
 	private final static String MANIPULATION_TAB_TITLE = "Kontroll";
 	private final static String MANIPULATION_TAB_DESCRIPTION = "Kontroll";
 	private final static String VIEW_TAB_TITLE = "Visa";
@@ -20,7 +20,12 @@ public class BikeGarageGUI extends JFrame implements ChangeListener {
 	
 	private ArrayList<BasicTabPanel> tabs;
 	
-	public BikeGarageGUI(BicycleGarageManager bicycleGarageManager) {
+	/**
+	 * Create a new GUI object for the bicyclegarage.
+	 * @param bicycleGarageManager BicycleGarageManager object to be attached
+	 * to this gui. The GUI calls this object after user input.
+	 */
+	public BicycleGarageGUI(BicycleGarageManager bicycleGarageManager) {
 		tabs = new ArrayList<BasicTabPanel>();
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addChangeListener(this);
@@ -54,8 +59,33 @@ public class BikeGarageGUI extends JFrame implements ChangeListener {
 		}
 	}
 	
+	/**
+	 * Called when a new tab is chosen in the GUI.
+	 * Notifies all tabs of the tab change.
+	 */
 	@Override
 	public void stateChanged(ChangeEvent ce) {
 		notifyTabs();
+	}
+	
+	/**
+	 * Create a gui window asking the user for the maximum capacity
+	 * of the garage.
+	 * @return Value entered by user. Default value if operation failed.
+	 */
+	public static int getMaxBikes() {
+		String respons = "";
+		respons = JOptionPane.showInputDialog("Ange max antal cyklar för garaget");
+		try {
+			int val = Integer.parseInt(respons);
+			if (val > 0) return val;
+			return BicycleGarageManager.DEFAULT_MAX_BIKES;
+		} catch (NumberFormatException e) {
+			return BicycleGarageManager.DEFAULT_MAX_BIKES;
+		}
+	}
+	
+	public static void showMessage(String msg) {
+		JOptionPane.showMessageDialog(null, msg);
 	}
 }

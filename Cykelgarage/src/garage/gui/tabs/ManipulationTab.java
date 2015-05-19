@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
 import garage.controller.BicycleGarageManager;
+import garage.gui.BicycleGarageGUI;
 
 @SuppressWarnings("serial")
 public class ManipulationTab extends BasicTabPanel implements ActionListener {
@@ -212,20 +213,20 @@ public class ManipulationTab extends BasicTabPanel implements ActionListener {
 		String password = regUsrPasswordTextField.getText();
 		
 		if (username.length() != 10 || !username.matches("[0-9]+")) {
-			displayMessage("Ett användarnamn måste bestå av 10 siffror");
+			BicycleGarageGUI.showMessage("Ett användarnamn måste bestå av 10 siffror");
 			return;
 		}
 		
 		if (password.length() != 4 || !password.matches("[0-9]+")) {
-			displayMessage("Ett lösenord måste bestå av 4 siffror");
+			BicycleGarageGUI.showMessage("Ett lösenord måste bestå av 4 siffror");
 			return;
 		}
 		
 		boolean success = bicycleGarageManager.newUser(username, password);
 		if (success) {
-			displayMessage("Ny användare " + regUsrUsrnameTextField.getText() + " registrerad");
+			BicycleGarageGUI.showMessage("Ny användare " + regUsrUsrnameTextField.getText() + " registrerad");
 		} else {
-			displayMessage("Misslyckades med registrering av ny användare " + regUsrUsrnameTextField.getText());
+			BicycleGarageGUI.showMessage("Misslyckades med registrering av ny användare " + regUsrUsrnameTextField.getText());
 		}
 		clearTextFields();
 	}
@@ -233,10 +234,10 @@ public class ManipulationTab extends BasicTabPanel implements ActionListener {
 	private void removeUser() {
 		boolean success = bicycleGarageManager.removeUser(unregUsrUsrnameTextField.getText());
 		if (success) {
-			displayMessage("Användare " + unregUsrUsrnameTextField.getText() + " borttagen");
+			BicycleGarageGUI.showMessage("Användare " + unregUsrUsrnameTextField.getText() + " borttagen");
 		}
 		else {
-			displayMessage("Misslyckades med att ta bort användare " + unregUsrUsrnameTextField.getText());
+			BicycleGarageGUI.showMessage("Misslyckades med att ta bort användare " + unregUsrUsrnameTextField.getText());
 		}
 		clearTextFields();
 	}
@@ -244,10 +245,10 @@ public class ManipulationTab extends BasicTabPanel implements ActionListener {
 	private void addBike() {
 		boolean success = bicycleGarageManager.connectNewBike(addBikeUsrnameTextField.getText());
 		if (success) {
-			displayMessage("Ny cykel ansluten till cykelgaraget");
-			displayMessage("Skriver ut ny streckkod...");
+			BicycleGarageGUI.showMessage("Ny cykel ansluten till cykelgaraget");
+			BicycleGarageGUI.showMessage("Skriver ut ny streckkod...");
 		} else {
-			displayMessage("Misslyckades att ansluta en ny cykel till cykelgaraget");
+			BicycleGarageGUI.showMessage("Misslyckades att ansluta en ny cykel till cykelgaraget");
 		}
 		clearTextFields();
 	}
@@ -255,9 +256,9 @@ public class ManipulationTab extends BasicTabPanel implements ActionListener {
 	private void removeBike() {
 		boolean success = bicycleGarageManager.removeBike(remBikeBikeIDTextField.getText());
 		if (success) {
-			displayMessage("Tog bort cykel " + remBikeBikeIDTextField.getText());
+			BicycleGarageGUI.showMessage("Tog bort cykel " + remBikeBikeIDTextField.getText());
 		} else {
-			displayMessage("Misslyckades att ta bort cykel " + remBikeBikeIDTextField.getText());
+			BicycleGarageGUI.showMessage("Misslyckades att ta bort cykel " + remBikeBikeIDTextField.getText());
 		}
 		clearTextFields();
 	}

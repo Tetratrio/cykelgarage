@@ -16,6 +16,14 @@ public class Logger {
 	private Calendar calendar;
 	private DefaultListModel<String> logList = null;
 	
+	/**
+	 * Creates a new Logger object which is used for logging
+	 * anything into a file.
+	 * @param filename Filename of file where log is stored.
+	 * @param gui Used for determining if a gui window should
+	 * be created for the Logger. Only used for testing the
+	 * software, will not be in final version.
+	 */
 	public Logger(String filename, boolean gui) {
 		try {
 			writer = new PrintWriter(new FileWriter(new File(filename)), true);
@@ -33,9 +41,13 @@ public class Logger {
 		}
 	}
 	
+	/**
+	 * Log a String to the logfile. Adds date and time.
+	 * @param msg String to be logged.
+	 */
 	public void log(String msg) {
 		String logEntry = String.format(LOG_FORMAT, dateFormat.format(calendar.getTime()), msg);
-		writer.printf(logEntry);
+		writer.write(logEntry);
 		if (logList != null) {
 			logList.insertElementAt(logEntry, 0);
 		}
