@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
 public class Logger {
-	private final static String LOG_FORMAT = "[%s] %s\n";
+	private final static String LOG_FORMAT = "[%s] %s";
 	private final static String DATE_FORMAT_STRING = "yyyy-MM-dd HH:mm:ss";
 	private PrintWriter writer;
 	private DateFormat dateFormat;
@@ -26,7 +26,9 @@ public class Logger {
 	 */
 	public Logger(String filename, boolean gui) {
 		try {
-			writer = new PrintWriter(new FileWriter(new File(filename)), true);
+			File file = new File(filename);
+			file.createNewFile();
+			writer = new PrintWriter(new FileWriter(file, true), true);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -47,7 +49,7 @@ public class Logger {
 	 */
 	public void log(String msg) {
 		String logEntry = String.format(LOG_FORMAT, dateFormat.format(calendar.getTime()), msg);
-		writer.write(logEntry);
+		writer.println(logEntry);
 		if (logList != null) {
 			logList.insertElementAt(logEntry, 0);
 		}
