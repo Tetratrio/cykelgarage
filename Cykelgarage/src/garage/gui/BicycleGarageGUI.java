@@ -85,6 +85,10 @@ public class BicycleGarageGUI extends JFrame implements ChangeListener {
 		}
 	}
 	
+	/**
+	 * Display a messagedialoge for the user.
+	 * @param msg Message to be displayed.
+	 */
 	public static void showMessage(String msg) {
 		JOptionPane.showMessageDialog(null, msg);
 	}

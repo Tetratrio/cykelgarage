@@ -350,7 +350,7 @@ public class Database {
 	public List<String> getBikes(String username) {
 		ArrayList<String> bikeIdList = new ArrayList<String>();
 
-		if (!userExists(username)) {
+		if (username != null && !userExists(username)) {
 			return bikeIdList;
 		}
 		

@@ -2,3 +2,6 @@
 [2015-05-19 09:22:21] Front door unlocked by scanning barcode 0000000000002
 [2015-05-19 09:23:01] Front door unlocked by scanning barcode 0000000000004
 [2015-05-19 09:23:01] Front door unlocked by scanning barcode 0000000000005
+[2015-05-24 11:05:30] Front door unlocked by scanning barcode 0000000000010
+[2015-05-24 11:05:30] Bike exit door unlocked by scanning barcode 0000000000010
+[2015-05-24 11:10:27] Someone attempted to unlock the exit door by scanning barcode 0000000000010 which belongs to a user that was not checked-in

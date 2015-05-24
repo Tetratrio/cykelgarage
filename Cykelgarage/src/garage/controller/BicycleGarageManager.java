@@ -166,11 +166,15 @@ public class BicycleGarageManager implements KeyPadBufferListener, BarcodeReader
 	public void exitBarcode(String code) {
 		code = fillBarcode(code);
 		String user = database.getBikeOwner(code);
-		if (user != null && database.userCheckedIn(user)) {
-			LogAccess.event().log("Bike exit door unlocked by scanning barcode " + code);
-			
-			bikeExitDoorLock.open(UNLOCK_TIME);
-			database.checkOutUser(user);
+		if (user != null) {
+			if (database.userCheckedIn(user)) {
+				LogAccess.event().log("Bike exit door unlocked by scanning barcode " + code);
+				
+				bikeExitDoorLock.open(UNLOCK_TIME);
+				database.checkOutUser(user);
+			} else {
+				LogAccess.event().log("Someone attempted to unlock the exit door by scanning barcode " + code + " which belongs to a user that was not checked-in");
+			}
 		}
 	}
 	
@@ -232,6 +236,7 @@ public class BicycleGarageManager implements KeyPadBufferListener, BarcodeReader
 			} else {
 				System.err.println("Max antal cyklar (" + maxBikes + ") får ej överskridas");
 			}
+			return false;
 		}
 		String bikeID = database.connectNewBike(username);
 		if (bikeID == null) {
